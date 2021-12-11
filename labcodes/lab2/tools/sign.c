@@ -6,15 +6,21 @@
 int
 main(int argc, char *argv[]) {
     struct stat st;
+    // Check the number of arguments
     if (argc != 3) {
+        // print error message if there are some errors in arguments
         fprintf(stderr, "Usage: <input filename> <output filename>\n");
         return -1;
     }
+    // Check whether the file can be opened by checking if the return value of stat system call is zero
     if (stat(argv[1], &st) != 0) {
+        // print error message and reason if there is something wrong when open input file
         fprintf(stderr, "Error opening file '%s': %s\n", argv[1], strerror(errno));
         return -1;
     }
+    // print the file name and size
     printf("'%s' size: %lld bytes\n", argv[1], (long long)st.st_size);
+    // the size of input file can not be more than 510
     if (st.st_size > 510) {
         fprintf(stderr, "%lld >> 510!!\n", (long long)st.st_size);
         return -1;
