@@ -12,7 +12,7 @@ main(int argc, char *argv[]) {
         fprintf(stderr, "Usage: <input filename> <output filename>\n");
         return -1;
     }
-    // Check whether the file can be opened by checking if the return value of stat system call is zero
+    // try to open the input file
     if (stat(argv[1], &st) != 0) {
         // print error message and reason if there is something wrong when open input file
         fprintf(stderr, "Error opening file '%s': %s\n", argv[1], strerror(errno));
@@ -25,11 +25,12 @@ main(int argc, char *argv[]) {
         fprintf(stderr, "%lld >> 510!!\n", (long long)st.st_size);
         return -1;
     }
-    char buf[512];
-    memset(buf, 0, sizeof(buf));
-    FILE *ifp = fopen(argv[1], "rb");
-    int size = fread(buf, 1, st.st_size, ifp);
+    char buf[512]; // input file buffer
+    memset(buf, 0, sizeof(buf)); // set all the buffer to zero
+    FILE *ifp = fopen(argv[1], "rb"); // open the input file
+    int size = fread(buf, 1, st.st_size, ifp); // read the whole file into buffer
     if (size != st.st_size) {
+        // print error message if fails to read file
         fprintf(stderr, "read '%s' error, size is %d.\n", argv[1], size);
         return -1;
     }
