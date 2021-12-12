@@ -29,8 +29,8 @@ start:
 
 seta20.1:
     inb $0x64, %al                                  # Wait for not busy(8042 input buffer empty).
-    testb $0x2, %al                                 # 如果 %al 第低2位为1，则ZF = 0, 则跳转
-    jnz seta20.1                                    # 如果 %al 第低2位为0，则ZF = 1, 则不跳转
+    testb $0x2, %al                                 # 如果 %al 第低2位为1, 则跳转
+    jnz seta20.1                                    # 如果 %al 第低2位为0, 则不跳转
 
     movb $0xd1, %al                                 # 0xd1 -> port 0x64
     outb %al, $0x64                                 # 0xd1 means: write data to 8042's P2 port
